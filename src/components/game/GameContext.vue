@@ -51,7 +51,7 @@
 
                     <div class="fight-element fight-enemies mt-3">
                         <CardSlider v-if="getFight.enemyCards"
-                            :cards="getFight.enemyCards.concat(getFight.harmTreasureCards)">
+                            :cards="getFight.enemyCards.concat(getFight.harmTreasureCards).concat(getFight.doorCards)">
                         </CardSlider>
                     </div>
                     <div class="power-container power-end" v-if="getFight.enemiesPower">
