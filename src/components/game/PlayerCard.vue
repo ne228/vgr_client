@@ -104,6 +104,12 @@
                                 <CardSmallComponent :cardData="player.weaponItemCard_2"></CardSmallComponent>
                             </v-list-item>
                         </div>
+                        <div class="mt-2" v-for="bonusItemCard in player.bonusItemCards">
+                            <v-list-subheader class="text-center">Бонусная карта:</v-list-subheader>
+                            <v-list-item>
+                                <CardSmallComponent :cardData="bonusItemCard"></CardSmallComponent>
+                            </v-list-item>
+                        </div>
                     </v-list>
 
                 </v-card-text>

@@ -50,9 +50,9 @@
                     </div>
 
                     <div class="fight-element fight-enemies mt-3">
-                        <CardSlider v-if="getFight.enemyCards"
-                            :cards="getFight.enemyCards.concat(getFight.harmTreasureCards).concat(getFight.doorCards)">
+                        <CardSlider v-if="getFight.enemyCards" :cards="getEnemiesCards">
                         </CardSlider>
+
                     </div>
                     <div class="power-container power-end" v-if="getFight.enemiesPower">
                         <div>
@@ -132,6 +132,17 @@ export default {
                 return null;
 
             return move.fight;
+        },
+        getEnemiesCards() {
+            var res = [];
+            res = res.concat(this.getFight.enemyCards);
+            if (this.getFight.harmTreasureCards != null)
+                res = res.concat(this.getFight.harmTreasureCards)
+
+            if (this.getFight.doorCards != null)
+                res = res.concat(this.getFight.doorCards)
+            return res;
+
         },
         getTrustedOrders() {
             console.log("GET NOT TRUSTED", this.getFight);

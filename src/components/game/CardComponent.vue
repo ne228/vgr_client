@@ -86,9 +86,15 @@ export default {
             }
         },
         getImageUrl() {
-            const id = this.$route.params.id;
-            let url = getUrl() + (`/${id}/image/${this.cardData.id}/`);
-            return url;
+            try {
+                const id = this.$route.params.id;
+                let url = getUrl() + (`/${id}/image/${this.cardData.id}/`);
+
+                return url;
+            } catch (exc) {
+                return "null"
+            }
+
         }
     },
     async mounted() {
