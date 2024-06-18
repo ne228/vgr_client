@@ -1,7 +1,5 @@
 <template>
-    <!-- <v-btn color="success" class="" @click="start">Start</v-btn>
-    <v-btn color="primary" class="ml-3" @click="connect">Connect</v-btn>
-    <v-btn color="secondary" class="ml-3" @click="disconnect">Disconnect</v-btn> -->
+
     <v-alert v-if="error" class="mt-3" type="error">{{ error }}</v-alert>
     <div>
         <br>
@@ -12,6 +10,10 @@
             </div>
             <div class="action">
                 <FightOrders v-if="findAction('confirm_fight_order')"></FightOrders>
+            </div>
+
+            <div class="action">
+                <ClericExileDialog :cards="cards" v-if="findAction('cleric_exile')"></ClericExileDialog>
             </div>
             <div v-for="(action, index) in actions" :key="index">
                 <v-btn class="action" :color="action.color" @click="doEndpoint(action.path)">
@@ -27,11 +29,12 @@
 
 <script>
 import { Client } from '@stomp/stompjs';
-
 import { getData } from '@/services/apiService'
 import CardSlider from './CardSlider.vue';
 import CreateFightOrder from './fight_orders/CreateFightOrder.vue';
 import FightOrders from './fight_orders/FightOrders.vue';
+
+import ClericExileDialog from './race_class_actions/ClericExileDialog.vue';
 
 
 
@@ -39,13 +42,15 @@ export default {
     components: {
         CardSlider,
         CreateFightOrder,
-        FightOrders
+        FightOrders,
+        ClericExileDialog
     },
     data() {
         return {
             cards: [],
             actions: null,
-            error: ''
+            error: '',
+            finded_actions: []
         };
     },
     computed: {
@@ -124,14 +129,12 @@ export default {
             }
         },
         findAction(actionPath) {
+
             if (this.actions == null)
                 return false
 
             for (let i = 0; i < this.actions.length; i++) {
                 if (this.actions[i].path.includes(actionPath)) {
-
-                    // this.actions.splice(i, 1);
-                    // console.log("action", this.actions)
                     return true;
                     break; // Нашли элемент, выходим из цикла
                 }
