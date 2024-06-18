@@ -1,16 +1,17 @@
 <template>
-    <v-dialog max-width="700" max-height="900">
+    <v-dialog max-width="400" max-height="900">
         <template v-slot:activator="{ props: activatorProps }">
             <v-btn v-bind="activatorProps" variant="outlined" class="small-card d-flex">
-                <v-card-text class="text-left ma-3"> {{ cardData.title }} +{{ cardData.power }} </v-card-text>
+                <v-card-text class="text-left ma-3"> {{ cardData.title }} <span v-if="cardData.power > 0">+ {{
+                    cardData.power }} </span></v-card-text>
             </v-btn>
         </template>
 
         <template v-slot:default="{ isActive }">
             <v-card class="pa-5 ma-5">
                 <v-card-actions class="d-flex justify-content-between w-100">
-                    <h2 class="w-100 bold">Card</h2>
-                    <v-btn class="bg-info" text="Close" @click="isActive.value = false"></v-btn>
+                    <h2 class="w-100 bold">Карта</h2>
+                    <v-btn variant="outlined" text="Закрыть" @click="isActive.value = false"></v-btn>
                 </v-card-actions>
                 <v-divider></v-divider>
                 <div class="big-card-container mt-3">
