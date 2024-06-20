@@ -13,8 +13,16 @@
             </div>
 
             <div class="action">
+                <HalfingSellDialog :cards="cards" v-if="findAction('halfing_sell')"></HalfingSellDialog>
+            </div>
+            <div class="action">
+                <HalfingRollDialog :cards="cards" v-if="findAction('halfing_roll')"></HalfingRollDialog>
+            </div>
+
+            <div class="action">
                 <ClericExileDialog :cards="cards" v-if="findAction('cleric_exile')"></ClericExileDialog>
             </div>
+
             <div v-for="(action, index) in actions" :key="index">
                 <v-btn class="action" :color="action.color" @click="doEndpoint(action.path)">
                     {{ action.name }}</v-btn>
@@ -35,15 +43,17 @@ import CreateFightOrder from './fight_orders/CreateFightOrder.vue';
 import FightOrders from './fight_orders/FightOrders.vue';
 
 import ClericExileDialog from './race_class_actions/ClericExileDialog.vue';
-
-
+import HalfingSellDialog from './race_class_actions/HalfingSellDialog.vue';
+import HalfingRollDialog from './race_class_actions/HalfingRollDialog.vue';
 
 export default {
     components: {
         CardSlider,
         CreateFightOrder,
         FightOrders,
-        ClericExileDialog
+        ClericExileDialog,
+        HalfingSellDialog,
+        HalfingRollDialog
     },
     data() {
         return {
