@@ -23,6 +23,16 @@
                 <ClericExileDialog :cards="cards" v-if="findAction('cleric_exile')"></ClericExileDialog>
             </div>
 
+            <div class="action">
+                <WizardFlyDialog :cards="cards" v-if="findAction('wizard_fly')"></WizardFlyDialog>
+            </div>
+            <div class="action">
+                <WizardPacificationDialog :cards="getFight.enemyCards" v-if="findAction('wizard_pacification')">
+                </WizardPacificationDialog>
+            </div>
+            <!-- {{ getFight }} -->
+
+
             <div v-for="(action, index) in actions" :key="index">
                 <v-btn class="action" :color="action.color" @click="doEndpoint(action.path)">
                     {{ action.name }}</v-btn>
@@ -45,6 +55,8 @@ import FightOrders from './fight_orders/FightOrders.vue';
 import ClericExileDialog from './race_class_actions/ClericExileDialog.vue';
 import HalfingSellDialog from './race_class_actions/HalfingSellDialog.vue';
 import HalfingRollDialog from './race_class_actions/HalfingRollDialog.vue';
+import WizardFlyDialog from './race_class_actions/WizardFlyDialog.vue';
+import WizardPacificationDialog from './race_class_actions/WizardPacificationDialog.vue';
 
 export default {
     components: {
@@ -53,7 +65,15 @@ export default {
         FightOrders,
         ClericExileDialog,
         HalfingSellDialog,
-        HalfingRollDialog
+        HalfingRollDialog,
+        WizardFlyDialog,
+        WizardPacificationDialog
+    },
+    props: {
+        context: {
+            type: Object,
+            required: true
+        }
     },
     data() {
         return {
@@ -64,7 +84,22 @@ export default {
         };
     },
     computed: {
+        getFight() {
 
+            if (this.context == null)
+                return null;
+
+            if (!this.context.gameStarted)
+                return null;
+
+            var move = this.context.moves[this.context.moves.length - 1]
+            if (move.fight == null)
+                return null;
+
+
+
+            return move.fight;
+        },
     },
     async mounted() {
         // GAME ACTIONS

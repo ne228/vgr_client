@@ -81,7 +81,7 @@
             </div>
 
 
-            <UserActions></UserActions>
+            <UserActions :context="gameContext"></UserActions>
             <div class="log">
                 <p v-for="(message, index) in gameContext.messages" :key="index" cols="12" md="4">
                     {{ index + 1 }}: {{ message }}
