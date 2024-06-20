@@ -6,16 +6,12 @@
                 <template v-slot:activator="{ props: activatorProps }">
                     <v-btn class="text-none font-weight-regular" prepend-icon="mdi-account" text="Клерик: Изгнание"
                         variant="tonal" v-bind="activatorProps">
-                        Клерик: Изгнание
+                        Хафлинг: Продать шмотку
                     </v-btn>
                 </template>
 
                 <v-card>
-                    <v-card-title class="text-center">Клерик: Изгнание</v-card-title>
-                    <div class="text-center subtitle">Можешь сбросить до З карт в бою против Андедов. Каждый сброс дает
-                        тебе +3 Бонус.
-                    </div>
-
+                    <v-card-title class="text-center"> Хафлинг: Продать шмотку за двойную цену</v-card-title>
 
                     <!-- Выбранные карточки -->
                     <v-divider></v-divider>
@@ -33,7 +29,7 @@
                     <v-list lines="three" select-strategy="classic">
                         <v-list-subheader>Доступные карточки</v-list-subheader>
 
-                        <v-list-item v-for="(card, index) in cards" :key="index" :value="card"
+                        <v-list-item v-for="(card, index) in treasure_cards" :key="index" :value="card"
                             @click="toggleCardSelection(card)">
                             <template v-slot:prepend="{ isActive }">
                                 <v-list-item-action start>
@@ -42,8 +38,10 @@
                             </template>
 
                             <v-list-item-content>
-                                <v-list-item-title>{{ card.title }}</v-list-item-title>
-                                <v-list-item-subtitle>{{ card.text }}</v-list-item-subtitle>
+                                <v-list-item-title>{{ card.title }} </v-list-item-title>
+                                <v-list-item-subtitle>{{ card.cost }} голдов Бонус + {{ card.power
+                                    }}</v-list-item-subtitle>
+                                <v-list-item-subtitle></v-list-item-subtitle>
                             </v-list-item-content>
 
                             <!-- <template v-slot:append>
@@ -59,9 +57,9 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn text="Close" variant="plain" @click="dialog = false">Закрыть</v-btn>
-                        <v-btn color="primary" variant="tonal" @click="doClericExile"
+                        <v-btn color="primary" variant="tonal" @click="doHalfingSell"
                             :disabled="selectedCards.length === 0">
-                            Изгнание
+                            Продать
                         </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -80,7 +78,7 @@ export default {
         CardSmallComponent,
         CardInfo
     },
-    name: 'ClericExileDialog',
+    name: 'HalfingSellDialog',
     props: {
         cards: {
             type: Array,
@@ -93,26 +91,31 @@ export default {
             selectedCards: []
         };
     },
+    computed: {
+        treasure_cards() {
+
+            return this.cards.filter(card => card.cost && card.cost > 0);
+        }
+    },
     methods: {
         toggleCardSelection(card) {
             const index = this.selectedCards.indexOf(card);
             if (index > -1) {
                 this.selectedCards.splice(index, 1);
-            } else if (this.selectedCards.length < 3) {
+            } else if (this.selectedCards.length < 1) {
                 this.selectedCards.push(card);
             }
         },
         isSelected(card) {
             return this.selectedCards.includes(card);
         },
-        async doClericExile() {
+        async doHalfingSell() {
             const id = this.$route.params.id;
             var card1Id = this.selectedCards[0] ? this.selectedCards[0].id : "null";
-            var card2Id = this.selectedCards[1] ? this.selectedCards[1].id : "null";
-            var card3Id = this.selectedCards[2] ? this.selectedCards[2].id : "null";
+
 
             // Construct the endpoint URL with the card IDs
-            var endpointUrl = `cleric_exile/${id}?card1Id=${card1Id}&card2Id=${card2Id}&card3Id=${card3Id}`;
+            var endpointUrl = `halfing_sell/${id}?cardId=${card1Id}`;
             await this.getEndpoint(endpointUrl);
             this.dialog = false;
             this.selectedCards = []
