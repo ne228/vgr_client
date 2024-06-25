@@ -1,9 +1,8 @@
 <template>
     <v-dialog max-width="400" max-height="900">
         <template v-slot:activator="{ props: activatorProps }">
-            <v-btn v-bind="activatorProps" variant="outlined" class="small-card d-flex">
-                <v-card-text class="text-left ma-3"> {{ cardData.title }} <span v-if="cardData.power > 0">+ {{
-                    cardData.power }} </span></v-card-text>
+            <v-btn class="mb-2 w-100" v-bind="activatorProps">{{ cardData.title }} <span v-if="cardData.power > 0">+ {{
+                cardData.power }} </span>
             </v-btn>
         </template>
 

@@ -1699,10 +1699,10 @@ vue@^3.4.21:
     "@vue/server-renderer" "3.4.27"
     "@vue/shared" "3.4.27"
 
-"vuetify@npm:@vuetify/nightly@next":
-  version "3.3.0-next.2023-05-20"
-  resolved "https://registry.yarnpkg.com/@vuetify/nightly/-/nightly-3.3.0-next.2023-05-20.tgz#542ec8003bb28364fbe2a37fe40ca2f65e7b6602"
-  integrity sha512-r4hvXNexzdkrvNHE08r2325IdEnOWp5N7LTSJ57xAG2WpR2PyVArb/OkUKd2UOpT4XNrdC5h3FWBRr1LnhhwZA==
+vuetify@^3.6.10:
+  version "3.6.10"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.6.10.tgz#abd005dc9af31afba2b36fcbca62c13c4f29c998"
+  integrity sha512-Myd9+EFq4Gmu61yKPNVS0QdGQkcZ9cHom27wuvRw7jgDxM+X4MT9BwQRk/Dt1q3G3JlK8oh+ZYyq5Ps/Z73cMg==
 
 vuex@^4.1.0:
   version "4.1.0"
