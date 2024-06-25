@@ -5,38 +5,53 @@
         <br>
         <hr>
         <div class="action_list">
-            <div class="action">
-                <CreateFightOrder v-if="findAction('create_fight_order')"></CreateFightOrder>
+            <div class="action" v-if="findAction('create_fight_order')">
+                <CreateFightOrder></CreateFightOrder>
             </div>
-            <div class="action">
-                <FightOrders v-if="findAction('confirm_fight_order')"></FightOrders>
-            </div>
-
-            <div class="action">
-                <HalfingSellDialog :cards="cards" v-if="findAction('halfing_sell')"></HalfingSellDialog>
-            </div>
-            <div class="action">
-                <HalfingRollDialog :cards="cards" v-if="findAction('halfing_roll')"></HalfingRollDialog>
+            <div class="action" v-if="findAction('confirm_fight_order')">
+                <FightOrders></FightOrders>
             </div>
 
-            <div class="action">
-                <ClericExileDialog :cards="cards" v-if="findAction('cleric_exile')"></ClericExileDialog>
+            <div class="action" v-if="findAction('halfing_sell')">
+                <HalfingSellDialog :cards="get_items_cards"></HalfingSellDialog>
+            </div>
+            <div class="action" v-if="findAction('halfing_roll')">
+                <HalfingRollDialog :cards="cards"></HalfingRollDialog>
             </div>
 
-            <div class="action">
-                <WizardFlyDialog :cards="cards" v-if="findAction('wizard_fly')"></WizardFlyDialog>
+            <div class="action" v-if="findAction('cleric_exile')">
+                <ClericExileDialog :cards="cards"></ClericExileDialog>
             </div>
-            <div class="action">
-                <WizardPacificationDialog :cards="getFight.enemyCards" v-if="findAction('wizard_pacification')">
+
+            <div class="action" v-if="findAction('wizard_fly')">
+                <WizardFlyDialog :cards="cards"></WizardFlyDialog>
+            </div>
+
+            <div class="action" v-if="findAction('warrior_rampage')">
+                <WarriorRampageDialog :cards="cards"></WarriorRampageDialog>
+            </div>
+
+            <div class="action" v-if="findAction('wizard_pacification')">
+                <WizardPacificationDialog :cards="getFight.enemyCards">
                 </WizardPacificationDialog>
             </div>
-            <!-- {{ getFight }} -->
 
-
-            <div v-for="(action, index) in actions" :key="index">
-                <v-btn class="action" :color="action.color" @click="doEndpoint(action.path)">
-                    {{ action.name }}</v-btn>
+            <div class="action" v-if="findAction('thief_cut')">
+                <ThiefCutDialog :fight="getFight" :cards="cards" :players="getFight.fightPlayers">
+                </ThiefCutDialog>
             </div>
+
+            <div class="action" v-if="findAction('thief_steal')">
+                <ThiefStealDialog :context="context">
+                </ThiefStealDialog>
+            </div>
+
+            <div v-for="(action, index) in get_actions" :key="index">
+                <v-btn class="action" :color="action.color" @click="doEndpoint(action.path)">
+                    {{ action.name }}
+                </v-btn>
+            </div>
+
         </div>
         <CardSlider v-if="cards" :cards="cards">
         </CardSlider>
@@ -57,6 +72,9 @@ import HalfingSellDialog from './race_class_actions/HalfingSellDialog.vue';
 import HalfingRollDialog from './race_class_actions/HalfingRollDialog.vue';
 import WizardFlyDialog from './race_class_actions/WizardFlyDialog.vue';
 import WizardPacificationDialog from './race_class_actions/WizardPacificationDialog.vue';
+import WarriorRampageDialog from './race_class_actions/WarriorRampageDialog.vue';
+import ThiefCutDialog from './race_class_actions/ThiefCutDialog.vue';
+import ThiefStealDialog from './race_class_actions/ThiefStealDialog.vue';
 
 export default {
     components: {
@@ -67,7 +85,10 @@ export default {
         HalfingSellDialog,
         HalfingRollDialog,
         WizardFlyDialog,
-        WizardPacificationDialog
+        WizardPacificationDialog,
+        WarriorRampageDialog,
+        ThiefCutDialog,
+        ThiefStealDialog
     },
     props: {
         context: {
@@ -78,14 +99,13 @@ export default {
     data() {
         return {
             cards: [],
-            actions: null,
+            actions: [],
             error: '',
             finded_actions: []
         };
     },
     computed: {
         getFight() {
-
             if (this.context == null)
                 return null;
 
@@ -96,10 +116,23 @@ export default {
             if (move.fight == null)
                 return null;
 
-
-
             return move.fight;
         },
+        get_items_cards() {
+            var res = []
+            this.cards.forEach(element => {
+                if (element.cost != null)
+                    if (element.cost > 0) {
+                        res.push(element);
+                    }
+
+            });
+            return res;
+        },
+        get_actions() {
+            let result_actions = this.actions.filter(action => !this.finded_actions.includes(action));
+            return result_actions;
+        }
     },
     async mounted() {
         // GAME ACTIONS
@@ -180,10 +213,12 @@ export default {
 
             for (let i = 0; i < this.actions.length; i++) {
                 if (this.actions[i].path.includes(actionPath)) {
+                    this.finded_actions.push(this.actions[i])
                     return true;
                     break; // Нашли элемент, выходим из цикла
                 }
             }
+
             return false;
         },
         async loadActions() {

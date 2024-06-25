@@ -1,26 +1,19 @@
 <template>
     <v-container>
-
-
         <v-dialog v-model="dialog" max-width="600">
             <template v-slot:activator="{ props: activatorProps }">
                 <v-btn color="primary" @click="activateSpell" v-bind="activatorProps">
-
-                    <img class="icon" src="/src/assets/wizard.png"></img>
-
-                    Волшебник: Заклинание Усмирения
+                    <img class="icon" src="/src/assets/warrior.png"></img>
+                    Воин: Буйство
                 </v-btn>
             </template>
 
             <v-card>
                 <v-card-title class="text-center">
-                    Волшебник: Заклинание Усмирения
+                    Воин: Буйство
                 </v-card-title>
                 <div class="text-center subtitle">
-                    Заклинание Усмирения: Можешь сбросить всю ”руку” (мин. З карты),
-                    чтобы усмирить одного монстра и не драться с ним; ты получаешь
-                    только его Сокровища, но не Уровень. Если в бою участвуют другие
-                    монстры, с ними придётся воевать.
+                    Буйство: Можешь скинуть до З карт в бою, каждая даёт тебе +1
                 </div>
 
                 <!-- Выбранные карточки -->
@@ -54,9 +47,9 @@
                     <v-spacer></v-spacer>
                     <v-btn text="Clear" variant="outlined" @click="clearSelection">Очистить</v-btn>
                     <v-btn text="Close" variant="plain" @click="dialog = false">Закрыть</v-btn>
-                    <v-btn color="primary" variant="tonal" @click="doWizardPacification"
-                        :disabled="selectedCards.length != maxItems">
-                        Усмирение
+                    <v-btn color="primary" variant="tonal" @click="doWarriorRampage"
+                        :disabled="selectedCards.length === 0">
+                        Буйство
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -75,7 +68,7 @@ export default {
         CardSmallComponent,
         CardInfo
     },
-    name: 'ClericExileDialog',
+    name: 'WizardFlyDialog',
     props: {
         cards: {
             type: Array,
@@ -86,7 +79,7 @@ export default {
         return {
             dialog: false,
             selectedCards: [],
-            maxItems: 1 // максимальное количество выбранных элементов
+            maxItems: 3 // максимальное количество выбранных элементов
         };
     },
     methods: {
@@ -104,15 +97,17 @@ export default {
         clearSelection() {
             this.selectedCards = [];
         },
-        async doWizardPacification() {
+        async doWarriorRampage() {
             const id = this.$route.params.id;
-            const cardId = this.selectedCards[0] ? this.selectedCards[0].id : 'null';
+            var card1Id = this.selectedCards[0] ? this.selectedCards[0].id : "null";
+            var card2Id = this.selectedCards[1] ? this.selectedCards[1].id : "null";
+            var card3Id = this.selectedCards[2] ? this.selectedCards[2].id : "null";
 
             // Construct the endpoint URL with the card IDs
-            const endpointUrl = `wizard_pacification/${id}?cardId=${cardId}`;
+            var endpointUrl = `warrior_rampage/${id}?card1Id=${card1Id}&card2Id=${card2Id}&card3Id=${card3Id}`;
             await this.getEndpoint(endpointUrl);
             this.dialog = false;
-            this.selectedCards = [];
+            this.selectedCards = []
         },
         async getEndpoint(path) {
             this.error = '';

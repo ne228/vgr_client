@@ -138,7 +138,7 @@ export default {
     props: {
         title: {
             type: String,
-            default: "Player Card"
+            default: "Игрок"
         },
         player: {
             type: Object,
@@ -175,6 +175,7 @@ export default {
 
 .card-action {
     display: flex;
+    /* flex-direction: column; */
     justify-content: space-between;
     width: 100%;
 
