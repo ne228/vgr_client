@@ -53,9 +53,13 @@
             </div>
 
         </div>
+
         <CardSlider v-if="cards" :cards="cards">
         </CardSlider>
 
+        <h2 v-if="context.discardCards">Сброшенные карты</h2>
+        <CardSlider v-if="context.discardCards" :cards="context.discardCards">
+        </CardSlider>
 
     </div>
 </template>

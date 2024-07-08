@@ -49,18 +49,14 @@
                             </v-list-item>
                         </div>
 
-                        <!-- <div class="mt-2" v-if="player.classes.length > 0">
-                            <v-list-subheader class="text-center">Класс:</v-list-subheader>
-                            <v-list-item v-for="(_class, index) in player.classes" :key="index" color="primary">
-                                <template v-slot:prepend>
-                                    <v-img class="icon" :src="'/src/assets/cleric.png'"></v-img>
-                                </template>
-
-                                <v-list-item-title class="ml-3"> {{ _class.name }}</v-list-item-title>
-                            </v-list-item>
-                        </div> -->
 
                         <v-list-subheader v-if="player.classes.length > 0" class="text-center">Класс:</v-list-subheader>
+
+                        <div class="mt-2" v-if="player.superMunchkinCard">
+                            <v-list-item>
+                                <CardSmallComponent :cardData="player.superMunchkinCard"></CardSmallComponent>
+                            </v-list-item>
+                        </div>
                         <div class="mt-2" v-for="_class in player.classes">
                             <v-list-item>
                                 <CardSmallComponent :cardData="_class"></CardSmallComponent>
@@ -68,22 +64,18 @@
                         </div>
 
                         <v-list-subheader v-if="player.races.length > 0" class="text-center">Класс:</v-list-subheader>
+                        <div class="mt-2" v-if="player.halfBloodCard">
+                            <v-list-item>
+                                <CardSmallComponent :cardData="player.halfBloodCard"></CardSmallComponent>
+                            </v-list-item>
+                        </div>
+
                         <div class="mt-2" v-for="race in player.races">
                             <v-list-item>
                                 <CardSmallComponent :cardData="race"></CardSmallComponent>
                             </v-list-item>
                         </div>
 
-                        <!-- <div class="mt-2" v-if="player.races.length > 0">
-                            <v-list-subheader class="text-center">Раса:</v-list-subheader>
-                            <v-list-item v-for="(race, index) in player.races" :key="index" color="primary">
-                                <template v-slot:prepend>
-                                    <v-img class="icon" :src="'/src/assets/race.png'"></v-img>
-                                </template>
-
-                                <v-list-item-title class="ml-3"> {{ race.title }}</v-list-item-title>
-                            </v-list-item>
-                        </div> -->
                         <div class="mt-2" v-if="player.armorItemCard">
                             <v-list-subheader class="text-center">Броник:</v-list-subheader>
                             <v-list-item>
@@ -124,6 +116,14 @@
                                 <CardSmallComponent :cardData="bonusItemCard"></CardSmallComponent>
                             </v-list-item>
                         </div>
+
+                        <div class="mt-2" v-for="curseCard in player.curses">
+                            <v-list-subheader class="text-center">Проклятия:</v-list-subheader>
+                            <v-list-item>
+                                <CardSmallComponent :cardData="curseCard"></CardSmallComponent>
+                            </v-list-item>
+                        </div>
+
                     </v-list>
 
                 </v-card-text>
